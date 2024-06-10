@@ -9,6 +9,7 @@ import { Avatar, Button, Divider, IconButton, Modal, Portal, Text, TextInput } f
 interface FormUser {
   name: string;
   phone: string;
+  urlImagen: string;
 }
 
 export const HomeScreen = () => {
@@ -16,6 +17,7 @@ export const HomeScreen = () => {
   const [formUser, setFormUser] = useState<FormUser>({
     name: "",
     phone: "",
+    urlImagen: ""
   });
 
   //Hook useState: que me permita trabajar con la data del usuario autenticado
@@ -26,6 +28,7 @@ export const HomeScreen = () => {
     setUserAuth(auth.currentUser);
     setFormUser({ name: auth.currentUser?.displayName ?? "N/A",
         phone: auth.currentUser?.phoneNumber?? "",
+        urlImagen: auth.currentUser?.photoURL?? ""
      });
      
      
@@ -42,7 +45,8 @@ export const HomeScreen = () => {
   //Función actualizar la data del usuario autenticado
   const handlerUpdateUser = async () => {
     await updateProfile(userAuth!, {
-      displayName: formUser.name
+      displayName: formUser.name,
+      photoURL: formUser.urlImagen
     },
 );
     setShowModal(false);
@@ -59,7 +63,7 @@ export const HomeScreen = () => {
     <>
     <View style={styles.rootHome}>
     <View style={styles.header}>
-          <Avatar.Text size={50} label="MI" />
+          <Avatar.Image size={50} source={{uri: userAuth?.photoURL??""}} />
           <View>
             <Text variant="bodySmall">Bienvenido</Text>
             <Text variant="labelLarge">{userAuth?.displayName}</Text>
@@ -99,6 +103,12 @@ export const HomeScreen = () => {
             label="Inserta tu número celular"
             value={formUser.phone}
             onChangeText={(value) => handlerSetValues("phone", value)}
+          />
+          <TextInput
+            mode="flat"
+            label="Inserta URL de tu foto de perfil"
+            value={formUser.urlImagen}
+            onChangeText={(value) => handlerSetValues("urlImagen", value)}
           />
           <TextInput
             mode="outlined"
