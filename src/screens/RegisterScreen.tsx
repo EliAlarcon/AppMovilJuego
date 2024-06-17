@@ -124,22 +124,26 @@ export const RegisterScreen = () => {
           }
           onChangeText={(value) => handlerSetValues("password", value)}
         />
-        <Button
-          icon="account-plus"
-          mode="contained-tonal"
-          style={styles.button}
-          onPress={handlerRegister}
-        >
-          Registrarse
-        </Button>
-        <Text
-          style={styles.textRedirect}
-          onPress={() =>
-            navigation.dispatch(CommonActions.navigate({ name: "LoginScreen" }))
-          }
-        >
-          Ya tienes una cuenta? Inicia Sesión
-        </Text>
+        <View style={styles.rootEnd}>
+          <Button
+            icon="account-plus"
+            mode="contained-tonal"
+            style={styles.button}
+            onPress={handlerRegister}
+          >
+            Registrarse
+          </Button>
+          <Text
+            style={styles.textRedirect}
+            onPress={() =>
+              navigation.dispatch(
+                CommonActions.navigate({ name: "LoginScreen" })
+              )
+            }
+          >
+            Ya tienes una cuenta? Inicia Sesión
+          </Text>
+        </View>
         <Snackbar
           visible={showMessage.visible}
           onDismiss={() => setShowMessage({ ...showMessage, visible: false })}

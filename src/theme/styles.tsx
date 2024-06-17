@@ -5,22 +5,27 @@ export const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    gap: 11,
-    backgroundColor: '#000000c0',
-    
+    gap: 10,
+    backgroundColor: "#000000c0",
   },
   inputs: {
     width: "90%",
   },
   button: {
     width: "90%",
-    backgroundColor: '#D8E5F7',
+    backgroundColor: "#FDFEFE",
+  },
+  rootEnd: {
+    paddingTop: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
   },
   textRedirect: {
     marginTop: 20,
     fontSize: 16,
     fontWeight: "bold",
-    color: "#FFFFFF",
+    color: "#FDFEFE",
   },
   rootHome: {
     flex: 1,
@@ -61,17 +66,61 @@ export const styles = StyleSheet.create({
   },
   image: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   textTitle: {
-    color: 'white',
+    color: "#FDFEFE",
     fontSize: 42,
-    fontWeight: 'bold',
-    textAlign: 'center',
+    fontWeight: "bold",
+    textAlign: "center",
   },
   textSubtitle: {
-    color: 'white',
+    color: "#FDFEFE",
     fontSize: 22,
+    textAlign: "center",
+  },
+  buttonHome: {
+    backgroundColor: "#E5E7E9",
+    borderColor: '#17202A',
+    borderStyle: 'dashed',
+    borderWidth: 3,
+    width: "35%",
+    height: "20%",
+    alignContent: 'center',
+    borderRadius: 0,
     textAlign: 'center',
+    verticalAlign: 'middle',
+    fontSize: 29,
+    fontStyle: 'italic',
+    fontWeight: 'bold',
+  },
+  groupButtonHome:{
+    alignItems: 'flex-end',
+    gap: 25,
+    marginTop: 42
+  },
+  cardWord:{
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+    backgroundColor: '#f5f5f5',
+  },
+  wordContainer: {
+    flexDirection: 'row',
+    marginBottom: 20,
+  },
+  letter: {
+    fontSize: 32,
+    marginHorizontal: 5,
+  },
+  alphabetContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+  },
+  attempts: {
+    marginTop: 20,
+    fontSize: 18,
   },
 });

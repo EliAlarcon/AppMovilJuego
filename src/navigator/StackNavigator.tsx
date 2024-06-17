@@ -54,7 +54,7 @@ export const StackNavigator = () => {
           <ActivityIndicator size={25} />
         </View>
       ) : (
-        <Stack.Navigator initialRouteName={isAuth ? "PlayScreen" : "LoginScreen"}>
+        <Stack.Navigator initialRouteName={isAuth ? "PlayScreen" : "HomeScreen"}>
           {routes.map((item, index) => (
             <Stack.Screen
               key={index}

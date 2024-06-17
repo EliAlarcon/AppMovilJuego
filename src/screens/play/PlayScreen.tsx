@@ -5,6 +5,7 @@ import { View } from "react-native";
 import { styles } from "../../theme/styles";
 import { Avatar, Button, Divider, IconButton, Modal, Portal, Text, TextInput } from "react-native-paper";
 import { CommonActions, useNavigation } from "@react-navigation/native";
+import { WordCardComponent } from "./components/WordCardComponent";
 
 //Interfaz que va a tener la data del usuario
 interface FormUser {
@@ -144,6 +145,7 @@ export const PlayScreen = () => {
           </Button>
         </Modal>
       </Portal>
+      <WordCardComponent/>
     </>
   )
 };
