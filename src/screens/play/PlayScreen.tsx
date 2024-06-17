@@ -1,9 +1,10 @@
 import React, { useEffect, useId, useState } from "react";
-import firebase, { updatePhoneNumber, updateProfile } from "firebase/auth";
+import firebase, { signOut, updatePhoneNumber, updateProfile } from "firebase/auth";
 import { auth } from '../../configs/firebaseConfig';
 import { View } from "react-native";
 import { styles } from "../../theme/styles";
 import { Avatar, Button, Divider, IconButton, Modal, Portal, Text, TextInput } from "react-native-paper";
+import { CommonActions, useNavigation } from "@react-navigation/native";
 
 //Interfaz que va a tener la data del usuario
 interface FormUser {
@@ -12,7 +13,7 @@ interface FormUser {
   urlImagen: string;
 }
 
-export const HomeScreen = () => {
+export const PlayScreen = () => {
   //Hook useState: para ir trabajando la data del usuario
   const [formUser, setFormUser] = useState<FormUser>({
     name: "",
@@ -37,6 +38,9 @@ export const HomeScreen = () => {
   //Hook useState: para manipular el modal
   const [showModal, setShowModal] = useState<boolean>(false);
 
+  //Hook de navegación
+  const navigation = useNavigation();
+
   //Función que cambie los valores del formUser
   const handlerSetValues = (key: string, value: string) => {
     setFormUser({ ...formUser, [key]: value });
@@ -50,6 +54,14 @@ export const HomeScreen = () => {
     },
 );
     setShowModal(false);
+  };
+
+  //Función cerrar sesión
+  const handlerSignOut = async () => {
+    await signOut(auth);
+    navigation.dispatch(
+      CommonActions.reset({ index: 0, routes: [{ name: "HomeScreen" }] })
+    );
   };
 
   //Función para actualizar el número de teléfono
@@ -70,6 +82,12 @@ export const HomeScreen = () => {
             <Text variant="labelLarge">{userAuth?.phoneNumber}</Text>
           </View>
           <View style={styles.iconEnd}>
+            <IconButton
+              icon="logout"
+              mode="contained"
+              size={32}
+              onPress={handlerSignOut}
+            />
             <IconButton
               icon="account-edit"
               mode="contained"

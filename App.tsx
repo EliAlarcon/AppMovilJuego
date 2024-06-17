@@ -1,6 +1,5 @@
 import "react-native-gesture-handler";
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import React from "react";
 import { PaperProvider } from "react-native-paper";
 import { NavigationContainer } from "@react-navigation/native";
 import { StackNavigator } from "./src/navigator/StackNavigator";
@@ -9,7 +8,7 @@ const App = () => {
   return (
     <NavigationContainer>
       <PaperProvider>
-        <StackNavigator/>
+        <StackNavigator />
       </PaperProvider>
     </NavigationContainer>
   );

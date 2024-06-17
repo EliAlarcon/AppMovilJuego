@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View } from "react-native";
+import { ImageBackground, View } from "react-native";
 import { Button, Snackbar, Text, TextInput } from "react-native-paper";
 import { styles } from "../theme/styles";
 import { createUserWithEmailAndPassword } from "firebase/auth";
@@ -34,7 +34,7 @@ export const RegisterScreen = () => {
   });
 
   //Hook useState: para visualizar la contraseña
-  const [hiddenPassword, setHiddenPassword] = useState<boolean>(false)
+  const [hiddenPassword, setHiddenPassword] = useState<boolean>(false);
 
   //Hook useNavigation: para navegar entre Screens
   const navigation = useNavigation();
@@ -84,6 +84,7 @@ export const RegisterScreen = () => {
         message: "Registro exitoso!",
         color: "#16AD01",
       });
+      navigation.dispatch(CommonActions.navigate({ name: "LoginScreen" }));
     } catch (ex) {
       console.log(ex);
       setShowMessage({
@@ -95,45 +96,58 @@ export const RegisterScreen = () => {
   };
 
   return (
-    <View style={styles.root}>
-      <Text variant="displaySmall">Registro</Text>
-      <TextInput
-        mode="flat"
-        label="Email"
-        placeholder="Ingrese su email"
-        style={styles.inputs}
-        onChangeText={(value) => handlerSetValues("email", value)}
-      />
-      <TextInput
-        mode="flat"
-        label="Contraseña"
-        placeholder="Ingrese su contraseña"
-        style={styles.inputs}
-        secureTextEntry={hiddenPassword}
-        right={<TextInput.Icon icon="eye" onPress={()=>setHiddenPassword(!hiddenPassword)}/>}
-        onChangeText={(value) => handlerSetValues("password", value)}
-      />
-      <Button
-        icon="account-plus"
-        mode="contained-tonal"
-        style={styles.button}
-        onPress={handlerRegister}
-      >
-        Registrarse
-      </Button>
-      <Text
-        style={styles.textRedirect}
-        onPress={() => navigation.dispatch(CommonActions.navigate({name: "Login"}))}
-      >
-        Ya tienes una cuenta? Inicia Sesión
-      </Text>
-      <Snackbar
-        visible={showMessage.visible}
-        onDismiss={() => setShowMessage({ ...showMessage, visible: false })}
-        style={{ backgroundColor: showMessage.color }}
-      >
-        {showMessage.message}
-      </Snackbar>
-    </View>
+    <ImageBackground
+      source={require("../assets/images/fondo.png")}
+      resizeMode="stretch"
+      style={styles.image}
+    >
+      <View style={styles.root}>
+        <Text style={styles.textTitle}>Registro</Text>
+        <TextInput
+          mode="flat"
+          label="Email"
+          placeholder="Ingrese su email"
+          style={styles.inputs}
+          onChangeText={(value) => handlerSetValues("email", value)}
+        />
+        <TextInput
+          mode="flat"
+          label="Contraseña"
+          placeholder="Ingrese su contraseña"
+          style={styles.inputs}
+          secureTextEntry={hiddenPassword}
+          right={
+            <TextInput.Icon
+              icon="eye"
+              onPress={() => setHiddenPassword(!hiddenPassword)}
+            />
+          }
+          onChangeText={(value) => handlerSetValues("password", value)}
+        />
+        <Button
+          icon="account-plus"
+          mode="contained-tonal"
+          style={styles.button}
+          onPress={handlerRegister}
+        >
+          Registrarse
+        </Button>
+        <Text
+          style={styles.textRedirect}
+          onPress={() =>
+            navigation.dispatch(CommonActions.navigate({ name: "LoginScreen" }))
+          }
+        >
+          Ya tienes una cuenta? Inicia Sesión
+        </Text>
+        <Snackbar
+          visible={showMessage.visible}
+          onDismiss={() => setShowMessage({ ...showMessage, visible: false })}
+          style={{ backgroundColor: showMessage.color }}
+        >
+          {showMessage.message}
+        </Snackbar>
+      </View>
+    </ImageBackground>
   );
 };

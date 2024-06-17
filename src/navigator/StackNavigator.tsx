@@ -7,7 +7,8 @@ import { styles } from "../theme/styles";
 import { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../configs/firebaseConfig";
-import { HomeScreen } from "../screens/HomeScreen/HomeScreen";
+import { HomeScreen } from "../screens/home/HomeScreen";
+import { PlayScreen } from "../screens/play/PlayScreen";
 
 const Stack = createStackNavigator();
 
@@ -15,16 +16,16 @@ const Stack = createStackNavigator();
 interface Routes {
   name: string;
   screen: () => JSX.Element; //elemento JSX
+  headerShown?: boolean;
 }
 
-//Arreglo que contenga las rutas si el usuario no está autenticado
-const routesNoAuth: Routes[] = [
-  { name: "Login", screen: LoginScreen },
-  { name: "Register", screen: RegisterScreen },
+//Arreglo con las rutas de la aplicación
+const routes: Routes[] = [
+  { name: "LoginScreen", screen: LoginScreen },
+  { name: "RegisterScreen", screen: RegisterScreen },
+  { name: "HomeScreen", screen: HomeScreen },
+  { name: "PlayScreen", screen: PlayScreen },
 ];
-
-//Arreglo que contenga las rutas si el usuario está autenticado
-const routesAuth: Routes[] = [{ name: "Home", screen: HomeScreen }];
 
 export const StackNavigator = () => {
   //Hook useState: verifica si está autenticado o no
@@ -53,24 +54,15 @@ export const StackNavigator = () => {
           <ActivityIndicator size={25} />
         </View>
       ) : (
-        <Stack.Navigator>
-          {!isAuth
-            ? routesNoAuth.map((item, index) => (
-                <Stack.Screen
-                  key={index}
-                  name={item.name}
-                  options={{ headerShown: false }}
-                  component={item.screen}
-                />
-              ))
-            : routesAuth.map((item, index) => (
-                <Stack.Screen
-                  key={index}
-                  name={item.name}
-                  options={{ headerShown: false }}
-                  component={item.screen}
-                />
-              ))}
+        <Stack.Navigator initialRouteName={isAuth ? "PlayScreen" : "LoginScreen"}>
+          {routes.map((item, index) => (
+            <Stack.Screen
+              key={index}
+              name={item.name}
+              options={{ headerShown: item.headerShown ?? false }}
+              component={item.screen}
+            />
+          ))}
         </Stack.Navigator>
       )}
     </>

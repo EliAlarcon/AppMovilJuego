@@ -1,10 +1,8 @@
 import React, { useState } from "react";
-import { View } from "react-native";
+import { ImageBackground, View } from "react-native";
 import { Button, Snackbar, Text, TextInput } from "react-native-paper";
 import { styles } from "../theme/styles";
-import {
-  signInWithEmailAndPassword,
-} from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../configs/firebaseConfig";
 import { CommonActions, useNavigation } from "@react-navigation/native";
 //import { CommonActions, useNavigation } from "@react-navigation/native";
@@ -57,7 +55,6 @@ export const LoginScreen = () => {
         message: "Completa todos los campos!",
         color: "#FF334F",
       });
-
       return;
     }
     //console.log(formLogin);
@@ -67,7 +64,7 @@ export const LoginScreen = () => {
         formLogin.email,
         formLogin.password
       );
-      //console.log(response);
+      navigation.dispatch(CommonActions.navigate({ name: "PlayScreen" }));
     } catch (ex) {
       console.log(ex);
       setShowMessage({
@@ -79,43 +76,61 @@ export const LoginScreen = () => {
   };
 
   return (
-    <View style={styles.root}>
-        <Text variant="displaySmall">Bienvenido</Text>
-      <Text variant="titleLarge">Inicia Sesión</Text>
-      <TextInput
-        mode="flat"
-        label="Email"
-        placeholder="Ingrese su email"
-        style={styles.inputs}
-        onChangeText={(value) => handlerSetValues("email", value)}
-      />
-      <TextInput
-        mode="flat"
-        label="Contraseña"
-        placeholder="Ingrese su contraseña"
-        secureTextEntry={hiddenPassword}
-        right={<TextInput.Icon icon="eye" onPress={()=>setHiddenPassword(!hiddenPassword)}/>}
-        style={styles.inputs}
-        onChangeText={(value) =>
-          handlerSetValues("password", value)
-        }
-      />
-      <Button icon="account" mode="contained-tonal" onPress={handlerLogin} style={styles.button}>
-        Iniciar Sesión
-      </Button>
-      <Text
-        style={styles.textRedirect}
-        onPress={() => navigation.dispatch(CommonActions.navigate({name: "Register"}))}
-      >
-        No tienes una cuenta? Regístrate ahora
-      </Text>
-      <Snackbar
-        visible={showMessage.visible}
-        onDismiss={() => setShowMessage({ ...showMessage, visible: false })}
-        style={{ backgroundColor: showMessage.color }}
-      >
-        {showMessage.message}
-      </Snackbar>
-    </View>
+    <ImageBackground
+      source={require("../assets/images/fondo.png")}
+      resizeMode="stretch"
+      style={styles.image}
+    >
+      <View style={styles.root}>
+        <Text style={styles.textTitle}>Bienvenido</Text>
+        <Text style={styles.textSubtitle}>Inicia Sesión</Text>
+        <TextInput
+          mode="flat"
+          label="Email"
+          placeholder="Ingrese su email"
+          style={styles.inputs}
+          onChangeText={(value) => handlerSetValues("email", value)}
+        />
+        <TextInput
+          mode="flat"
+          label="Contraseña"
+          placeholder="Ingrese su contraseña"
+          secureTextEntry={hiddenPassword}
+          right={
+            <TextInput.Icon
+              icon="eye"
+              onPress={() => setHiddenPassword(!hiddenPassword)}
+            />
+          }
+          style={styles.inputs}
+          onChangeText={(value) => handlerSetValues("password", value)}
+        />
+        <Button
+          icon="account"
+          mode="contained-tonal"
+          onPress={handlerLogin}
+          style={styles.button}
+        >
+          Iniciar Sesión
+        </Button>
+        <Text
+          style={styles.textRedirect}
+          onPress={() =>
+            navigation.dispatch(
+              CommonActions.navigate({ name: "RegisterScreen" })
+            )
+          }
+        >
+          No tienes una cuenta? Regístrate ahora
+        </Text>
+        <Snackbar
+          visible={showMessage.visible}
+          onDismiss={() => setShowMessage({ ...showMessage, visible: false })}
+          style={{ backgroundColor: showMessage.color }}
+        >
+          {showMessage.message}
+        </Snackbar>
+      </View>
+    </ImageBackground>
   );
 };
