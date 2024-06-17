@@ -104,4 +104,9 @@ export const styles = StyleSheet.create({
     flexWrap: "wrap",
     justifyContent: "center",
   },
+  wordContainer: {
+    flexDirection: 'row',
+    marginBottom: 20,
+    justifyContent: 'center'
+  },
 });
