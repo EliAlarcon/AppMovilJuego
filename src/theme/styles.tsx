@@ -109,4 +109,16 @@ export const styles = StyleSheet.create({
     marginBottom: 20,
     justifyContent: 'center'
   },
+  cardImagePlay: {
+    alignItems: 'center',
+    marginBottom: 30,
+    backgroundColor: 'white',
+    height: "40%",
+    justifyContent:'center',
+    marginHorizontal: 30
+  },
+  imagePlay:{
+    height:"90%",
+    width: 300
+  }
 });

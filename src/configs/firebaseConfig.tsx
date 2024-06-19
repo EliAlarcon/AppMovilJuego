@@ -2,6 +2,7 @@
 import { initializeApp } from "firebase/app";
 import { getReactNativePersistence, initializeAuth } from "firebase/auth";
 import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage";
+import { getStorage } from "firebase/storage";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -24,3 +25,5 @@ export const auth = initializeAuth(firebase, {
 
 auth.languageCode = 'it';
 
+// Get a reference to the storage service, which is used to create references in your storage bucket
+export const storageRef = getStorage();
