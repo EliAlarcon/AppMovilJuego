@@ -8,19 +8,28 @@ import { ImagePlayComponent } from "./ImagePlayComponent";
 
 const word = "ESTUDIANTE";
 
+//Arreglo de palabra a adivinar
+const lettersWord: string[] = word.split("");
+let successes = 0;
+
 export const WordCardComponent = () => {
   //Hook para controlar el estado del botón presionado del alfabeto
   const [pressLetter, setPressLetter] = useState<string[]>([]);
 
   //Hook para controlar los errores
-  const [attempt, setAttempt] = useState(0);
+  const [attempt, setAttempt] = useState<number>(0);
+
+  //Hook para controlar los aciertos
+  //const [successes, setSuccesses] = useState<number>(1);
 
   //Función para almacenar letras de los botones presionados
   const handlerSetValues = (letter: string) => {
     //Validación para contar el número de intentos
-    if (attempt < 6) {
+    if (attempt < 5) {
       if (!word.includes(letter)) {
         setAttempt(attempt + 1);
+      } else {
+        winePlay(letter);
       }
     } else {
       Alert.alert("Game Over", `La palabra era: ${word}`, [
@@ -31,8 +40,31 @@ export const WordCardComponent = () => {
   };
   //console.log(pressLetter);
 
+  //Función para contar aciertos
+  const winePlay = (letter: string) => {
+    lettersWord.forEach((value) => {
+      if (successes != word.length) {
+        if (value == letter) {
+          successes = successes + 1;
+          //console.log(successes);
+        }
+      } else {
+        Alert.alert("Felicidades Ganaste!!!!", "Vamos con el siguiente reto", [
+          { text: "Siguiente", onPress: resetGame },
+        ]);
+      }
+    });
+  };
+
+  //Función para reiniciar el juego
+  const resetGame = () => {
+    setPressLetter([]);
+    setAttempt(0);
+    successes=0;
+  };
+
   //Función para mostrar alfabeto
-  const displayAlphabet = () => {
+  const alphabetKeyboard = () => {
     //Arreglo para las letras del alfabeto
     const alphabet: string[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
     //console.log(alphabet);
@@ -51,10 +83,8 @@ export const WordCardComponent = () => {
     ));
   };
 
-  //Función para convertir la palabra en arreglo
   const splitWord = () => {
-    const lettersWord: string[] = word.split("");
-    //console.log(lettersWord);
+    //const lettersWord: string[] = word.split("");
     return lettersWord.map((letter: string, index: number) => (
       <Text key={index} variant="titleLarge">
         {pressLetter.includes(letter) ? letter : "_ "}
@@ -62,18 +92,12 @@ export const WordCardComponent = () => {
     ));
   };
 
-  //Función para reiniciar el juego
-  const resetGame = () => {
-    setPressLetter([]);
-    setAttempt(0);
-  };
-
   return (
     <>
       <ImagePlayComponent attempt={attempt} />
-        <View style={styles.wordContainer}>{splitWord()}</View>
+      <View style={styles.wordContainer}>{splitWord()}</View>
       <Card>
-        <View style={styles.alphabetContainer}>{displayAlphabet()}</View>
+        <View style={styles.alphabetContainer}>{alphabetKeyboard()}</View>
       </Card>
     </>
   );

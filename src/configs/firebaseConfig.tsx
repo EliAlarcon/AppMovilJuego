@@ -3,6 +3,8 @@ import { initializeApp } from "firebase/app";
 import { getReactNativePersistence, initializeAuth } from "firebase/auth";
 import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage";
 import { getStorage } from "firebase/storage";
+import { getDatabase } from "firebase/database";
+
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -13,7 +15,8 @@ const firebaseConfig = {
   projectId: "app-movil-juego",
   storageBucket: "app-movil-juego.appspot.com",
   messagingSenderId: "555944797030",
-  appId: "1:555944797030:web:a42e164677e70848b95ea7"
+  appId: "1:555944797030:web:a42e164677e70848b95ea7",
+  databaseUrl: "https://app-movil-juego-default-rtdb.firebaseio.com/"
 };
 
 // Initialize Firebase
@@ -27,3 +30,6 @@ auth.languageCode = 'it';
 
 // Get a reference to the storage service, which is used to create references in your storage bucket
 export const storageRef = getStorage();
+
+// Initialize Realtime Database and get a reference to the service
+export const dbRealTime = getDatabase(firebase);

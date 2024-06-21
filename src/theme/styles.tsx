@@ -41,6 +41,10 @@ export const styles = StyleSheet.create({
     alignItems: "flex-end",
     flex: 1,
   },
+  groupButton: {
+    flexDirection: 'row-reverse',
+    left: '20%'
+  },
   modal: {
     paddingHorizontal: 20,
     paddingVertical: 20,
