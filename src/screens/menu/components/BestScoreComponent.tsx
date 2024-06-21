@@ -1,46 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { ModalNewComponent } from "../../../components/ModalNewComponent";
-import { onValue, ref } from "firebase/database";
+import { onValue, ref, remove } from "firebase/database";
 import { auth, dbRealTime } from "../../../configs/firebaseConfig";
-import { UserPlay } from "../../play/PlayScreen";
-import { Score } from "../../play/components/PunctuationComponent";
+import { View } from "react-native";
+import { Card, Text } from "react-native-paper";
+import { FlatList } from "react-native-gesture-handler";
 
 interface Props {
   showModal: boolean;
   setShowModal: Function;
 }
 
-interface ScoreResponse {
-    userId: string;
-  name: string;
-  phone: string;
-  urlImagen: string;
-  scoreId: string;
+interface ScoreData {
+  id: string;
   score: number;
-}
-
-const returnUserScore = (data: ScoreResponse) => {
-    const user: UserPlay ={
-        id: data.userId,
-        name: data.name,
-        phone: data.phone,
-        urlImagen: data.urlImagen
-    }
-
-    const score: Score ={
-        id: data.scoreId,
-        score: data.score
-    }
-
-    return{
-        user: user,
-        score: score
-    }
 }
 
 export const BestScoreComponent = ({ showModal, setShowModal }: Props) => {
   //Hook useState: para leer la data
-  const [scoreData, setScoreData] = useState<Score[]>([]);
+  const [scoreData, setScoreData] = useState<ScoreData[]>([]);
   console.log(scoreData);
 
   useEffect(() => {
@@ -54,19 +32,14 @@ export const BestScoreComponent = ({ showModal, setShowModal }: Props) => {
       const data = snapshot.val();
       if (!data) return;
       const getKeys = Object.keys(data);
-      const listScore: Score[] = [];
+      const listScore: ScoreData[] = [];
       getKeys.forEach((key) => {
         const value = { ...data[key], id: key };
         listScore.push(value);
       });
       setScoreData(listScore);
+      
     });
-  };
-
-  const listScore = () => {
-    for (let index = 0; index < scoreData.length; index++) {
-      const element = scoreData[index];
-    }
   };
 
   return (
@@ -74,7 +47,21 @@ export const BestScoreComponent = ({ showModal, setShowModal }: Props) => {
       title="Mejores Puntajes"
       showModal={showModal}
       setShowModal={setShowModal}
-      children={<></>}
+      children={
+        <>
+          <View>
+            {scoreData.length > 0 ? (
+              scoreData.map((score, index) => (
+                <Text key={score.id}>{`${index + 1}. Score: ${
+                  score.score
+                }`}</Text>
+              ))
+            ) : (
+              <Text>No scores available</Text>
+            )}
+          </View>
+        </>
+      }
     />
   );
 };

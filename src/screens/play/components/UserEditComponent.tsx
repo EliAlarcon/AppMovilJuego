@@ -28,6 +28,7 @@ export const UserEditComponent = ({
   //Hook useEffect: para capturar la data del usuario autenticado
   useEffect(() => {
     setFormUser({
+      id: auth.currentUser?.uid!,
       name: auth.currentUser?.displayName ?? "N/A",
       phone: auth.currentUser?.phoneNumber ?? "",
       urlImagen: auth.currentUser?.photoURL ?? "",
@@ -36,6 +37,7 @@ export const UserEditComponent = ({
 
   //Hook useState: para ir trabajando la data del usuario
   const [formUser, setFormUser] = useState<UserPlay>({
+    id: "",
     name: "",
     phone: "",
     urlImagen: "",

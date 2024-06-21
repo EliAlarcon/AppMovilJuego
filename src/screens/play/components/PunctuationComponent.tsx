@@ -13,8 +13,7 @@ interface Props {
   punctuation: number;
 }
 
-export interface Score{
-  id: string;
+interface Score{
   score: number;
 }
 
@@ -24,13 +23,20 @@ export const PunctuationComponent = ({
   punctuation,
 }: Props) => {
   
+  const [scoreReg, setScoreReg] = useState<Score>({
+    score:punctuation
+  })
+
+  useEffect(() => {
+    setScoreReg({...scoreReg,['score']:punctuation})
+    console.log("sC"+scoreReg.score);
+  }, [])
   
-  //Función para guardar arreglo de palabras
   const handlerSaveScore = async () => {
-    const dbRef = ref(dbRealTime, "score/" + auth.currentUser?.uid);
+    const dbRef = ref(dbRealTime, "score/");
     const saveScore = push(dbRef);
     try {
-      await set(saveScore, punctuation);
+      await set(saveScore, scoreReg);
     } catch (ex) {
       console.log(ex);
     }
