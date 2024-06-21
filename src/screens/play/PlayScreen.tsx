@@ -15,7 +15,7 @@ import { WordCardComponent } from "./components/WordCardComponent";
 import { UserEditComponent } from "./components/UserEditComponent";
 
 //Interfaz que va a tener la data del usuario
-export interface User {
+export interface UserPlay {
   name: string;
   phone: string;
   urlImagen: string;

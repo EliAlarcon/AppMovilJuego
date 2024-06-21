@@ -124,5 +124,10 @@ export const styles = StyleSheet.create({
   imagePlay:{
     height:"90%",
     width: 300
-  }
+  },
+  textInput:{
+    borderColor: "#17202A",
+    borderStyle: "dashed",
+    borderWidth: 3,
+  },
 });

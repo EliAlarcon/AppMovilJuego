@@ -2,14 +2,15 @@ import React, { useEffect, useState } from "react";
 import { Alert, Image, View } from "react-native";
 import { Button, Card, Text } from "react-native-paper";
 import { styles } from "../../../theme/styles";
-import { ref } from "firebase/storage";
-import { storageRef } from "../../../configs/firebaseConfig";
 import { ImagePlayComponent } from "./ImagePlayComponent";
+import { onValue, ref } from "firebase/database";
+import { dbRealTime } from "../../../configs/firebaseConfig";
 
-const word = "ESTUDIANTE";
+interface WordData {
+  id: string;
+  words: string[];
+}
 
-//Arreglo de palabra a adivinar
-const lettersWord: string[] = word.split("");
 let successes = 0;
 
 export const WordCardComponent = () => {
@@ -19,20 +20,46 @@ export const WordCardComponent = () => {
   //Hook para controlar los errores
   const [attempt, setAttempt] = useState<number>(0);
 
-  //Hook para controlar los aciertos
-  //const [successes, setSuccesses] = useState<number>(1);
+  //Hook useState: para leer la data
+  const [wordData, setWordData] = useState<WordData[]>([]);
+
+  //Hook para controlar la palabra seleccionada
+  const [wordSelect, setWordSelect] = useState<string>("");
+
+  //Hook para controlar el puntaje
+  const [punctuation, setPunctuation] = useState<number>(0);
+
+  //Hook para traer la palabra
+  useEffect(() => {
+    getAllWords();
+  }, []);
+
+  //Arreglo de palabra a adivinar
+  const lettersWord: string[] = wordSelect.split("");
+
+  //Función para obtener palabra aleatoria
+  const randomWordFunction = () => {
+    let ramdomId:number = Math.floor(Math.random() * wordData.length);
+    if (ramdomId==1) {
+      ramdomId=0;
+    }
+    const wordList = wordData[ramdomId].words;
+    const randomIndex = Math.floor(Math.random() * wordList.length);
+    const randomWord = wordList[randomIndex];
+    setWordSelect(randomWord)
+  };
 
   //Función para almacenar letras de los botones presionados
   const handlerSetValues = (letter: string) => {
     //Validación para contar el número de intentos
     if (attempt < 5) {
-      if (!word.includes(letter)) {
+      if (!wordSelect.includes(letter)) {
         setAttempt(attempt + 1);
       } else {
         winePlay(letter);
       }
     } else {
-      Alert.alert("Game Over", `La palabra era: ${word}`, [
+      Alert.alert("Game Over", `La palabra era: ${wordSelect}`, [
         { text: "Inténtalo de nuevo", onPress: resetGame },
       ]);
     }
@@ -43,14 +70,16 @@ export const WordCardComponent = () => {
   //Función para contar aciertos
   const winePlay = (letter: string) => {
     lettersWord.forEach((value) => {
-      if (successes != word.length) {
+      console.log(wordSelect.length);
+      
+      if (successes != wordSelect.length) {
         if (value == letter) {
           successes = successes + 1;
-          //console.log(successes);
+          console.log(successes);
         }
       } else {
         Alert.alert("Felicidades Ganaste!!!!", "Vamos con el siguiente reto", [
-          { text: "Siguiente", onPress: resetGame },
+          { text: "Siguiente", onPress: nextWord },
         ]);
       }
     });
@@ -60,8 +89,18 @@ export const WordCardComponent = () => {
   const resetGame = () => {
     setPressLetter([]);
     setAttempt(0);
-    successes=0;
+    successes = 0;
   };
+
+  //Función para continuar con la siguiente palabra
+  const nextWord = () =>{
+    setAttempt(0);
+    successes = 0;
+    setPressLetter([]);
+    randomWordFunction;
+    setPunctuation(punctuation+10)
+    console.log(punctuation);
+  }
 
   //Función para mostrar alfabeto
   const alphabetKeyboard = () => {
@@ -84,7 +123,7 @@ export const WordCardComponent = () => {
   };
 
   const splitWord = () => {
-    //const lettersWord: string[] = word.split("");
+    //const lettersWord: string[] = wordSelect!.split("");
     return lettersWord.map((letter: string, index: number) => (
       <Text key={index} variant="titleLarge">
         {pressLetter.includes(letter) ? letter : "_ "}
@@ -92,8 +131,25 @@ export const WordCardComponent = () => {
     ));
   };
 
+  //READ - CRUD
+  const getAllWords = () => {
+    const dbRef = ref(dbRealTime, "words/");
+    onValue(dbRef, (snapshot) => {
+      const data = snapshot.val();
+      if (!data) return;
+      const getKeys = Object.keys(data);
+      const listWords: WordData[] = [];
+      getKeys.forEach((key) => {
+        const value = { ...data[key], id: key };
+        listWords.push(value);
+      });
+      setWordData(listWords);
+    });
+  };
+
   return (
     <>
+      <Text onPress={randomWordFunction}>Empezar</Text>
       <ImagePlayComponent attempt={attempt} />
       <View style={styles.wordContainer}>{splitWord()}</View>
       <Card>

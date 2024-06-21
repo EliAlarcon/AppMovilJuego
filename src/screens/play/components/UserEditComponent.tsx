@@ -11,14 +11,8 @@ import {
 } from "react-native-paper";
 import { styles } from "../../../theme/styles";
 import { User, updatePhoneNumber, updateProfile } from "firebase/auth";
-import firebase from 'firebase/auth';
 import { auth } from "../../../configs/firebaseConfig";
-
-interface FormUser {
-  name: string;
-  phone: string;
-  urlImagen: string;
-}
+import { UserPlay } from "../PlayScreen";
 
 interface Props {
   userAuth: User;
@@ -26,18 +20,22 @@ interface Props {
   setShowModal: Function;
 }
 
-export const UserEditComponent = ({userAuth, showModal, setShowModal}:Props) => {
+export const UserEditComponent = ({
+  userAuth,
+  showModal,
+  setShowModal,
+}: Props) => {
   //Hook useEffect: para capturar la data del usuario autenticado
   useEffect(() => {
-    setFormUser({ name: auth.currentUser?.displayName ?? "N/A",
-        phone: auth.currentUser?.phoneNumber?? "",
-        urlImagen: auth.currentUser?.photoURL?? ""
-     });
-     
+    setFormUser({
+      name: auth.currentUser?.displayName ?? "N/A",
+      phone: auth.currentUser?.phoneNumber ?? "",
+      urlImagen: auth.currentUser?.photoURL ?? "",
+    });
   }, []);
 
   //Hook useState: para ir trabajando la data del usuario
-  const [formUser, setFormUser] = useState<FormUser>({
+  const [formUser, setFormUser] = useState<UserPlay>({
     name: "",
     phone: "",
     urlImagen: "",

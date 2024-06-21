@@ -3,19 +3,18 @@ import { View } from "react-native";
 import { Snackbar } from "react-native-paper";
 
 //Interface - mensajes
-interface MessageSnackbar {
+export interface MessageSnackbar {
   visible: boolean;
   message: string;
   color: string;
 }
 
-export const MessagesSnackbarComponent = () => {
-  //Hook useState: para visualiazar u ocultar mensaje
-  const [showMessage, setShowMessage] = useState<MessageSnackbar>({
-    visible: false,
-    message: "",
-    color: "#ffff",
-  });
+interface Props{
+  showMessage: MessageSnackbar;
+  setShowMessage: Function
+}
+
+export const MessagesSnackbarComponent = ({showMessage, setShowMessage}:Props) => {
 
   return (
     <View>

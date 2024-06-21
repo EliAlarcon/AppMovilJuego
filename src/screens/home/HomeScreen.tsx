@@ -17,7 +17,7 @@ export const HomeScreen = () => {
       >
         <View style={styles.groupButtonHome}>
           <Text style={styles.buttonHome} onPress={()=>{navigation.dispatch(CommonActions.navigate({name: "LoginScreen"}))}}>Jugar</Text>
-          <Text style={styles.buttonHome} onPress={()=>{navigation.dispatch(CommonActions.navigate({name: "LoginScreen"}))}}>Menu</Text>
+          <Text style={styles.buttonHome} onPress={()=>{navigation.dispatch(CommonActions.navigate({name: "MenuScreen"}))}}>Menu</Text>
         </View>
       </ImageBackground>
     </View>

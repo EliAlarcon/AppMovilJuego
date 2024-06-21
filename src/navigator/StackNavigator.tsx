@@ -9,6 +9,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../configs/firebaseConfig";
 import { HomeScreen } from "../screens/home/HomeScreen";
 import { PlayScreen } from "../screens/play/PlayScreen";
+import { MenuScreen } from "../screens/menu/MenuScreen";
 
 const Stack = createStackNavigator();
 
@@ -25,6 +26,7 @@ const routes: Routes[] = [
   { name: "RegisterScreen", screen: RegisterScreen },
   { name: "HomeScreen", screen: HomeScreen },
   { name: "PlayScreen", screen: PlayScreen },
+  { name: "MenuScreen", screen: MenuScreen, headerShown: true },
 ];
 
 export const StackNavigator = () => {
