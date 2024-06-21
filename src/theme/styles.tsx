@@ -130,4 +130,46 @@ export const styles = StyleSheet.create({
     borderStyle: "dashed",
     borderWidth: 3,
   },
+  groupButtonPlay: {
+    flexDirection: 'row',
+    gap: 50,
+    marginTop: 42,
+    justifyContent: 'center',
+    paddingBottom: 30
+  },
+
+  buttonPlay: {
+    backgroundColor: "#E5E7E9",
+    borderColor: "#17202A",
+    borderStyle: "dashed",
+    borderWidth: 2,
+    width: "35%",
+    borderRadius: 0,
+    textAlign: "center",
+    verticalAlign: "middle",
+    fontSize: 29,
+    fontStyle: "italic",
+    fontWeight: "bold",
+  },
+  groupButtonMenu: {
+    alignItems: 'center',
+    gap: 60
+  },
+  buttonMenu: {
+    backgroundColor: "#E5E7E9",
+    borderColor: "#17202A",
+    borderStyle: "dashed",
+    borderWidth: 3,
+    width: 300,
+    height: "25%",
+    alignContent: "center",
+    borderRadius: 0,
+    textAlign: "center",
+    verticalAlign: "middle",
+    fontSize: 29,
+    fontStyle: "italic",
+    fontWeight: "bold",
+    paddingHorizontal: '10%',
+    justifyContent: 'center'
+  },
 });

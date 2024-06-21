@@ -3,7 +3,7 @@ import firebase, {
   signOut,
 } from "firebase/auth";
 import { auth } from "../../configs/firebaseConfig";
-import { View } from "react-native";
+import { Alert, View } from "react-native";
 import { styles } from "../../theme/styles";
 import {
   Avatar,
@@ -16,12 +16,14 @@ import { UserEditComponent } from "./components/UserEditComponent";
 
 //Interfaz que va a tener la data del usuario
 export interface UserPlay {
+  id: string;
   name: string;
   phone: string;
   urlImagen: string;
 }
 
 export const PlayScreen = () => {
+  const urlImagDefault = 'https://i.pinimg.com/550x/a8/0e/36/a80e3690318c08114011145fdcfa3ddb.jpg';
   //Hook useState: que me permita trabajar con la data del usuario autenticado
   const [userAuth, setUserAuth] = useState<firebase.User | null>(null);
 
@@ -48,7 +50,7 @@ export const PlayScreen = () => {
     <>
       <View style={styles.rootHome}>
         <View style={styles.header}>
-          <Avatar.Image size={50} source={{ uri: userAuth?.photoURL ?? "" }} />
+          <Avatar.Image size={50} source={{ uri: userAuth?.photoURL ?? urlImagDefault }} />
           <View>
             <Text variant="bodySmall">Bienvenido</Text>
             <Text variant="labelLarge">{userAuth?.displayName}</Text>

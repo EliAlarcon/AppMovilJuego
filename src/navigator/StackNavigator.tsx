@@ -26,7 +26,7 @@ const routes: Routes[] = [
   { name: "RegisterScreen", screen: RegisterScreen },
   { name: "HomeScreen", screen: HomeScreen },
   { name: "PlayScreen", screen: PlayScreen },
-  { name: "MenuScreen", screen: MenuScreen, headerShown: true },
+  { name: "MenuScreen", screen: MenuScreen },
 ];
 
 export const StackNavigator = () => {
