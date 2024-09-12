@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { ModalNewComponent } from "../../../components/ModalNewComponent";
 import { onValue, ref, remove } from "firebase/database";
-import { auth, dbRealTime } from "../../../configs/firebaseConfig";
+import { auth, dbRealTime } from '../../../configs/firebaseConfig';
 import { View } from "react-native";
 import { Card, Text } from "react-native-paper";
-import { FlatList } from "react-native-gesture-handler";
 
 interface Props {
   showModal: boolean;
@@ -13,13 +12,13 @@ interface Props {
 
 interface ScoreData {
   id: string;
+  usuario: string;
   score: number;
 }
 
 export const BestScoreComponent = ({ showModal, setShowModal }: Props) => {
   //Hook useState: para leer la data
   const [scoreData, setScoreData] = useState<ScoreData[]>([]);
-  console.log(scoreData);
 
   useEffect(() => {
     getAllScores();
@@ -38,7 +37,7 @@ export const BestScoreComponent = ({ showModal, setShowModal }: Props) => {
         listScore.push(value);
       });
       setScoreData(listScore);
-      
+      console.log(listScore);
     });
   };
 
@@ -51,11 +50,14 @@ export const BestScoreComponent = ({ showModal, setShowModal }: Props) => {
         <>
           <View>
             {scoreData.length > 0 ? (
-              scoreData.map((score, index) => (
-                <Text key={score.id}>{`${index + 1}. Score: ${
-                  score.score
-                }`}</Text>
-              ))
+              scoreData.map((score, index) => {
+                if (score.usuario) {
+                  
+                }
+                return (
+                  <Text key={index}>Usuario:{score.usuario} Puntaje: {score.score}</Text>
+                )
+              })
             ) : (
               <Text>No scores available</Text>
             )}
