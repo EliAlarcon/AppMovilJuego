@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View } from "react-native";
 import {
+  Avatar,
   Button,
   Divider,
   IconButton,
@@ -11,8 +12,10 @@ import {
 } from "react-native-paper";
 import { styles } from "../../../theme/styles";
 import { User, updatePhoneNumber, updateProfile } from "firebase/auth";
-import { auth } from "../../../configs/firebaseConfig";
+import { auth, storageRef } from "../../../configs/firebaseConfig";
 import { UserPlay } from "../PlayScreen";
+import * as ImagePicker from "expo-image-picker";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 interface Props {
   userAuth: User;
@@ -20,12 +23,15 @@ interface Props {
   setShowModal: Function;
 }
 
-export const UserEditComponent = ({
-  userAuth,
-  showModal,
-  setShowModal,
-}: Props) => {
-  //Hook useEffect: para capturar la data del usuario autenticado
+export const UserEditComponent = ({ userAuth, showModal, setShowModal }: Props) => {
+  const [formUser, setFormUser] = useState({
+    id: "",
+    name: "",
+    phone: "",
+    urlImagen: "",
+  });
+
+  // Hook useEffect: para capturar la data del usuario autenticado
   useEffect(() => {
     setFormUser({
       id: auth.currentUser?.uid!,
@@ -35,33 +41,62 @@ export const UserEditComponent = ({
     });
   }, []);
 
-  //Hook useState: para ir trabajando la data del usuario
-  const [formUser, setFormUser] = useState<UserPlay>({
-    id: "",
-    name: "",
-    phone: "",
-    urlImagen: "",
-  });
+  // Función para seleccionar imagen de la galería
+  const pickImage = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [1, 1], // Define el aspecto de la imagen
+      quality: 1,
+    });
 
-  //Función que cambie los valores del formUser
-  const handlerSetValues = (key: string, value: string) => {
-    setFormUser({ ...formUser, [key]: value });
+    if (!result.canceled && result.assets && result.assets.length > 0) {
+      // Subir la imagen a Firebase Storage
+      const uri = result.assets[0].uri;;
+      await uploadImageToFirebase(uri);
+    }
   };
 
-  //Función actualizar la data del usuario autenticado
+  // Función para subir imagen a Firebase Storage
+  const uploadImageToFirebase = async (uri: string) => {
+    try {
+      const response = await fetch(uri);
+      const blob = await response.blob();
+
+      //const storage = getStorage();
+      const almacenamiento = ref(storageRef, `profile_pictures/${auth.currentUser?.uid}.jpg`); // Crear referencia para almacenar imagen
+
+      await uploadBytes(almacenamiento, blob); // Subir imagen a Firebase Storage
+
+      // Obtener la URL de descarga de la imagen almacenada
+      const downloadURL = await getDownloadURL(almacenamiento);
+
+      // Actualizar la URL de la imagen del perfil en Firebase Auth
+      await updateProfile(auth.currentUser!, {
+        photoURL: downloadURL,
+      });
+
+      // Actualizar el estado de formUser con la nueva URL de imagen
+      setFormUser((prevState) => ({ ...prevState, urlImagen: downloadURL }));
+    } catch (error) {
+      console.error("Error al subir la imagen: ", error);
+    }
+  };
+
+  // Función para actualizar el nombre de usuario y la URL de la imagen
   const handlerUpdateUser = async () => {
-    await updateProfile(userAuth!, {
+    await updateProfile(auth.currentUser!, {
       displayName: formUser.name,
       photoURL: formUser.urlImagen,
     });
     setShowModal(false);
   };
 
-  //Función para actualizar el número de teléfono
-  const handlerUpdatePhone = async () => {
-    await updatePhoneNumber;
-    setShowModal(false);
+  // Función para cambiar los valores del formUser
+  const handlerSetValues = (key: string, value: string) => {
+    setFormUser({ ...formUser, [key]: value });
   };
+  
 
   return (
     <Portal>
@@ -89,12 +124,13 @@ export const UserEditComponent = ({
           value={formUser.phone}
           onChangeText={(value) => handlerSetValues("phone", value)}
         />
-        <TextInput
-          mode="flat"
-          label="Inserta URL de tu foto de perfil"
-          value={formUser.urlImagen}
-          onChangeText={(value) => handlerSetValues("urlImagen", value)}
-        />
+        {/* Avatar de la imagen del perfil */}
+        <Avatar.Image size={100} source={{ uri: formUser.urlImagen || "https://example.com/default-avatar.png" }} />
+        
+        <Button mode="outlined" onPress={pickImage}>
+          Seleccionar Imagen de Perfil
+        </Button>
+
         <TextInput
           mode="outlined"
           label="Correo"
