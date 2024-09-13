@@ -25,7 +25,7 @@ export const PunctuationComponent = ({
   
   const [scoreReg, setScoreReg] = useState<Score>({
     id: auth.currentUser?.uid || "anonymous",
-    usuario: auth.currentUser?.displayName || "Anónimo",
+    usuario: auth.currentUser?.displayName ?? "Anónimo",
     score:punctuation
   })
 

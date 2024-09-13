@@ -43,7 +43,7 @@ export const BestScoreComponent = ({ showModal, setShowModal }: Props) => {
 
   return (
     <ModalNewComponent
-      title="Mejores Puntajes"
+      title="Puntajes"
       showModal={showModal}
       setShowModal={setShowModal}
       children={
@@ -55,7 +55,7 @@ export const BestScoreComponent = ({ showModal, setShowModal }: Props) => {
                   
                 }
                 return (
-                  <Text key={index}>Usuario:{score.usuario} Puntaje: {score.score}</Text>
+                  <Text key={index}>Usuario: {score.usuario} Puntaje: {score.score}</Text>
                 )
               })
             ) : (

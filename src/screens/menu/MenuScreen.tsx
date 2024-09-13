@@ -19,7 +19,7 @@ export const MenuScreen = () => {
       <View style={styles.root}>
         <View style={styles.groupButtonMenu}>
           <Text style={styles.buttonMenu} onPress={() => setShowModal(true)}>
-            Mejores Puntuaciones
+            Puntuaciones
           </Text>
           <Text
             style={styles.buttonMenu}
